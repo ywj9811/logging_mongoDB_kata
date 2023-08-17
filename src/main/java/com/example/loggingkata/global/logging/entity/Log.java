@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.util.StringUtils;
 
@@ -21,6 +22,7 @@ public class Log {
     private String methodName;
     private String exceptionMessage;
     private LogType logType;
+    @Indexed(expireAfterSeconds = 60)
     private LocalDateTime logDate = LocalDateTime.now();
 
     @Builder
