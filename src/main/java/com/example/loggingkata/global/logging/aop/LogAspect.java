@@ -1,6 +1,6 @@
 package com.example.loggingkata.global.logging.aop;
 
-import com.example.loggingkata.global.logging.dto.Request;
+import com.example.loggingkata.global.logging.dto.LogRequest;
 import com.example.loggingkata.global.logging.service.LogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,18 +35,18 @@ public class LogAspect {
             traceStatus = logTrace.start(joinPoint.getSignature().getName());
             Object result = joinPoint.proceed();
             Integer executionTime = logTrace.end(traceStatus);
-            logService.save(new Request(traceStatus.getThreadId(), executionTime, traceStatus.getMethodName(), null));
+            logService.save(new LogRequest(traceStatus.getThreadId(), executionTime, traceStatus.getMethodName(), null));
             return result;
         } catch (ClassCastException e) {
             if (traceStatus != null) {
                 logTrace.apiException(e, traceStatus);
-                logService.save(new Request(traceStatus.getThreadId(), 0, traceStatus.getMethodName(), e.getMessage()));
+                logService.save(new LogRequest(traceStatus.getThreadId(), 0, traceStatus.getMethodName(), e.getMessage()));
             }
             throw e;
         }catch (Exception e) {
             if (traceStatus != null) {
                 logTrace.exception(e, traceStatus);
-                logService.save(new Request(traceStatus.getThreadId(), 0, traceStatus.getMethodName(), e.getMessage()));
+                logService.save(new LogRequest(traceStatus.getThreadId(), 0, traceStatus.getMethodName(), e.getMessage()));
             }
             throw e;
         }

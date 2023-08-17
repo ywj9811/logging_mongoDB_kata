@@ -1,15 +1,17 @@
 package com.example.loggingkata.global.logging.dto;
 
+import com.example.loggingkata.global.logging.entity.Log;
 import com.example.loggingkata.global.logging.entity.LogType;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
+@AllArgsConstructor
+@Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Response {
+public class LogResponse {
     private final String id;
     private final String logId;
     private final Integer executeTime;
@@ -18,18 +20,17 @@ public class Response {
     private final LocalDateTime logDate;
     private final LogType logType;
 
-    @Builder
-    public Response(String id, String logId, Integer executeTime, String methodName,
-                    String exceptionMessage, LocalDateTime logDate, LogType logType) {
-        this.id = id;
-        this.logId = logId;
-        this.executeTime = executeTime;
-        this.methodName = methodName;
-        this.exceptionMessage = exceptionMessage;
-        this.logDate = logDate;
-        this.logType = logType;
+    public static LogResponse from(Log log) {
+        return LogResponse.builder()
+                .id(log.getId())
+                .logId(log.getLogId())
+                .executeTime(log.getExecuteTime())
+                .methodName(log.getMethodName())
+                .exceptionMessage(log.getExceptionMessage())
+                .logDate(log.getLogDate())
+                .logType(log.getLogType())
+                .build();
     }
-
     @Override
     public String toString() {
         return "InfoLogResponse[" +

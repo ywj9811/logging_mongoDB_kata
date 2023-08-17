@@ -1,10 +1,17 @@
 package com.example.loggingkata.global.logging.service;
 
-import com.example.loggingkata.global.logging.dto.Request;
+import com.example.loggingkata.global.logging.dto.LogRequest;
+import com.example.loggingkata.global.logging.dto.LogResponse;
+import com.example.loggingkata.global.logging.entity.Log;
+import com.example.loggingkata.global.logging.entity.LogType;
 import com.example.loggingkata.global.logging.repository.LogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+import static com.example.loggingkata.global.logging.entity.LogType.*;
 
 @Service
 @Slf4j
@@ -12,8 +19,44 @@ import org.springframework.stereotype.Service;
 public class LogService {
     private final LogRepository logRepository;
 
-    public void save(Request request) {
+    public void save(LogRequest logRequest) {
         log.info("log save");
-        logRepository.save(request.toEntity());
+        logRepository.save(logRequest.toEntity());
+    }
+
+    public List<String> getInfo() {
+        List<Optional<Log>> allByLogType = logRepository.findAllByLogType(INFO.name());
+        List<String> response = new ArrayList<>();
+        for (Optional<Log> logInfo : allByLogType) {
+            response.add(
+                    LogResponse.from(logInfo.orElseThrow())
+                    .toString()
+            );
+        }
+        return response;
+    }
+
+    public List<String> getWarn() {
+        List<Optional<Log>> allByLogType = logRepository.findAllByLogType(WARN.name());
+        List<String> response = new ArrayList<>();
+        for (Optional<Log> logInfo : allByLogType) {
+            response.add(
+                    LogResponse.from(logInfo.orElseThrow())
+                            .toString()
+            );
+        }
+        return response;
+    }
+
+    public List<String> getError() {
+        List<Optional<Log>> allByLogType = logRepository.findAllByLogType(ERROR.name());
+        List<String> response = new ArrayList<>();
+        for (Optional<Log> logInfo : allByLogType) {
+            response.add(
+                    LogResponse.from(logInfo.orElseThrow())
+                            .toString()
+            );
+        }
+        return response;
     }
 }

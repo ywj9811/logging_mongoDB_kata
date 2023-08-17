@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class Request {
+public class LogRequest {
     private String logId;
     private Integer executeTime;
     private String methodName;
