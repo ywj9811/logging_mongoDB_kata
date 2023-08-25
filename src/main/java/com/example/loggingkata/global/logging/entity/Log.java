@@ -32,12 +32,12 @@ public class Log {
     }
 
     private void checkExceptionMessage(String exceptionMessage){
-        if(StringUtils.hasText(exceptionMessage)){
-            this.logType = LogType.ERROR;
-            this.exceptionMessage=exceptionMessage;
-        }else{
+        if(exceptionMessage.equals("null")){
             this.logType = LogType.INFO;
             this.exceptionMessage="";
+        }else{
+            this.logType = LogType.ERROR;
+            this.exceptionMessage=exceptionMessage;
         }
     }
 }

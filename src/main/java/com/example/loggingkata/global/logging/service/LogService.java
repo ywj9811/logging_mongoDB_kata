@@ -5,6 +5,8 @@ import com.example.loggingkata.global.logging.dto.LogResponse;
 import com.example.loggingkata.global.logging.entity.Log;
 import com.example.loggingkata.global.logging.entity.LogType;
 import com.example.loggingkata.global.logging.repository.LogRepository;
+import com.example.loggingkata.global.rabbitMQ.dto.LogEventMessage;
+import com.example.loggingkata.global.rabbitMQ.producer.MessageProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,12 @@ import static com.example.loggingkata.global.logging.entity.LogType.*;
 @RequiredArgsConstructor
 public class LogService {
     private final LogRepository logRepository;
+    private final MessageProducer messageProducer;
 
     public void save(LogRequest logRequest) {
         log.info("log save");
-        logRepository.save(logRequest.toEntity());
+        messageProducer.sendMessage(logRequest);
+//        logRepository.save(logRequest.toEntity());
     }
 
     public List<String> getInfo() {
