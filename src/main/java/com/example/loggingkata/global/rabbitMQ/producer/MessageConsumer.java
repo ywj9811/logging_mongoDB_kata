@@ -3,6 +3,8 @@ package com.example.loggingkata.global.rabbitMQ.producer;
 import com.example.loggingkata.global.logging.dto.LogRequest;
 import com.example.loggingkata.global.logging.repository.LogRepository;
 import com.example.loggingkata.global.rabbitMQ.dto.LogEventMessage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -11,12 +13,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class MessageConsummer {
+public class MessageConsumer {
     private final LogRepository logRepository;
+    private final ObjectMapper objectMapper;
+
     @RabbitListener(queues = "${spring.rabbitmq.queue.name}")
-    public void receive(LogEventMessage logEventMessage) {
-        log.info("Received message: {}", logEventMessage.getPayload().toString());
-        LogRequest logRequest = convertFromString(logEventMessage.getPayload().toString());
+    public void receive(String request) throws JsonProcessingException {
+        LogRequest logRequest = objectMapper.readValue(request, LogRequest.class);
+        log.info("Received message: {}", logRequest.toString());
+//        LogRequest logRequest = convertFromString(logEventMessage.getPayload().toString());
         logRepository.save(logRequest.toEntity());
     }
 

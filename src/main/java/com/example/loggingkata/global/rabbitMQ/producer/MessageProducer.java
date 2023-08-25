@@ -1,6 +1,9 @@
 package com.example.loggingkata.global.rabbitMQ.producer;
 
+import com.example.loggingkata.global.logging.dto.LogRequest;
 import com.example.loggingkata.global.rabbitMQ.dto.LogEventMessage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -19,15 +22,16 @@ public class MessageProducer {
     private String routingKey;
 
     private final RabbitTemplate rabbitTemplate;
+    private final ObjectMapper objectMapper;
 
     /**
      * Queue로 메시지를 발행
      *
-     * @param payload 발행할 메시지의 DTO 객체
+     * @param logRequest 발행할 메시지의 DTO 객체
      */
-    public void sendMessage(Object payload) {
-        LogEventMessage logEventMessage = new LogEventMessage(payload);
-        log.info("message sent: {}", logEventMessage.getPayload().toString());
-        rabbitTemplate.convertAndSend(exchangeName, routingKey, logEventMessage);
+    public void sendMessage(LogRequest logRequest) throws JsonProcessingException {
+//        LogEventMessage logEventMessage = new LogEventMessage(payload);
+        log.info("message sent: {}", logRequest.toString());
+        rabbitTemplate.convertAndSend(exchangeName, routingKey, objectMapper.writeValueAsString(logRequest));
     }
 }

@@ -7,6 +7,7 @@ import com.example.loggingkata.global.logging.entity.LogType;
 import com.example.loggingkata.global.logging.repository.LogRepository;
 import com.example.loggingkata.global.rabbitMQ.dto.LogEventMessage;
 import com.example.loggingkata.global.rabbitMQ.producer.MessageProducer;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class LogService {
     private final LogRepository logRepository;
     private final MessageProducer messageProducer;
 
-    public void save(LogRequest logRequest) {
+    public void save(LogRequest logRequest) throws JsonProcessingException {
         log.info("log save");
         messageProducer.sendMessage(logRequest);
 //        logRepository.save(logRequest.toEntity());
