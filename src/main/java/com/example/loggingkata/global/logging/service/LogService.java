@@ -3,9 +3,7 @@ package com.example.loggingkata.global.logging.service;
 import com.example.loggingkata.global.logging.dto.LogRequest;
 import com.example.loggingkata.global.logging.dto.LogResponse;
 import com.example.loggingkata.global.logging.entity.Log;
-import com.example.loggingkata.global.logging.entity.LogType;
 import com.example.loggingkata.global.logging.repository.LogRepository;
-import com.example.loggingkata.global.rabbitMQ.dto.LogEventMessage;
 import com.example.loggingkata.global.rabbitMQ.producer.MessageProducer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +24,6 @@ public class LogService {
     public void save(LogRequest logRequest) throws JsonProcessingException {
         log.info("log save");
         messageProducer.sendMessage(logRequest);
-//        logRepository.save(logRequest.toEntity());
     }
 
     public List<String> getInfo() {

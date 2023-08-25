@@ -1,4 +1,4 @@
-package com.example.loggingkata.global.rabbitMQ.producer;
+package com.example.loggingkata.global.rabbitMQ.consumer;
 
 import com.example.loggingkata.global.logging.dto.LogRequest;
 import com.example.loggingkata.global.logging.repository.LogRepository;
