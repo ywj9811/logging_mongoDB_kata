@@ -1,7 +1,6 @@
 package com.example.loggingkata.global.rabbitMQ.producer;
 
 import com.example.loggingkata.global.logging.dto.LogRequest;
-import com.example.loggingkata.global.rabbitMQ.dto.LogEventMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,6 @@ public class MessageProducer {
      * @param logRequest 발행할 메시지의 DTO 객체
      */
     public void sendMessage(LogRequest logRequest) throws JsonProcessingException {
-//        LogEventMessage logEventMessage = new LogEventMessage(payload);
         log.info("message sent: {}", logRequest.toString());
         rabbitTemplate.convertAndSend(exchangeName, routingKey, objectMapper.writeValueAsString(logRequest));
     }
