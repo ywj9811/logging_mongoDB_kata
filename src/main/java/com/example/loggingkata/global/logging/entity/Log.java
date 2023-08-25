@@ -1,7 +1,6 @@
 package com.example.loggingkata.global.logging.entity;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -25,7 +24,6 @@ public class Log {
     @Indexed(expireAfterSeconds = 60)
     private LocalDateTime logDate = LocalDateTime.now();
 
-    @Builder
     public Log(String logId, Integer executeTime, String methodName, String exceptionMessage) {
         this.logId = logId;
         this.executeTime = executeTime;

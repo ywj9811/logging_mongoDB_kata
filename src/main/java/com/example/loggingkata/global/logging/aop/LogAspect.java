@@ -32,7 +32,7 @@ public class LogAspect {
     private Object getObject(ProceedingJoinPoint joinPoint) throws Throwable {
         TraceStatus traceStatus = null;
         try {
-            traceStatus = logTrace.start(joinPoint.getSourceLocation().getWithinType() + " : " + joinPoint.getSignature().getName());
+            traceStatus = logTrace.start(joinPoint.getSignature().getDeclaringType() + " : " + joinPoint.getSignature().getName());
             Object result = joinPoint.proceed();
             Integer executionTime = logTrace.end(traceStatus);
             logService.save(new LogRequest(traceStatus.getThreadId(), executionTime, traceStatus.getMethodName(), null));
